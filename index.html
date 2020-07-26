@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8">
+		<title>Múltiplos</title>
+	</head>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		
+		div.container{
+			margin: 0 auto;
+			width: 80%;
+			height: 1000px;
+		}
+		
+		h3.titulo{
+			margin-top: 10px;
+			text-align: center;
+			font-size: 28px;
+		}
+		
+		div.resultado{
+			width: 100%;
+			margin: 10px auto;
+			height: 260px;
+			border: 1px solid;
+			overflow: auto;
+		}
+		
+		table#tabela{
+			width: 100%;
+			text-align: center;
+		}
+		
+		div#quant{
+			margin-top: 10px;
+			font-size: 23px;
+		}
+		
+		div.search{
+			margin-top: 20px;
+			float: left;
+			width: 35%;
+		}
+		
+		input#valor{
+			width: 65%;
+			height: 30px;
+			font-size: 23px;
+		}
+		
+		button#btn-multiplos{
+			width: 30%;
+			height: 33px;
+			font-size: 23px;
+		}
+		
+		div.intervalo{
+			float: right;
+			margin-top: 20px;
+			width: 35%;
+		}
+		
+		input#intervalo{
+			width: 65%;
+			height: 30px;
+			font-size: 23px;
+		}
+		
+		button#btn-interval{
+			float: right;
+			width: 30%;
+			height: 33px;
+			font-size: 23px;
+		}
+		
+	</style>
+	<body>
+		<div class="container">
+			<h3 class="titulo">Múltiplos em vetor de inteiros</h3>
+			<div class="resultado">
+				<table id="tabela" border="1">
+				</table>
+			</div> <!-- class resultado -->
+			<div id="quant">
+			</div> <!-- class quant -->
+			<div class="search">
+				<h2>Múltiplos</h2>
+				<input type="number" id="valor">
+				<button id="btn-multiplos">OK</button>
+			</div> <!-- class search -->
+			<div class="intervalo">
+				<h2>Intervalo</h2>
+				<input type="number" id="intervalo" value="200">
+				<button id="btn-interval">OK</button>
+			</div> <!-- class intervalo -->
+		</div> <!-- class container -->
+			
+			<script type="text/javascript">
+				
+				var numeros;//armazena os números em um vetor
+				
+				const tabela = document.querySelector('#tabela');
+				const quant = document.querySelector('#quant');
+				
+				const multiplo = document.querySelector('#valor');
+				const btnMultiplos = document.querySelector('#btn-multiplos');
+				const intervalo = document.querySelector('#intervalo');
+				const btnIntervalo = document.querySelector('#btn-interval');
+				
+				//atribuindo a busca  de múltiplos ao evento click do butão de múltiplos
+				btnMultiplos.addEventListener('click', function(){
+					
+					if(multiplo.value != ""){
+						
+						const valor = parseInt(multiplo.value);
+						
+						if(valor > 0){
+							multiplos(valor);
+						}else{
+							alert("Coloque um valor maior que 0!");
+						}
+						
+					}else{
+						alert("Coloque um número!");
+					}
+					
+				});
+				
+				//atribuindo o preenchemento da tabela ao evento click do butão de intervalo
+				btnIntervalo.addEventListener('click', function(){
+
+					if(intervalo.value != ""){
+						const valor = parseInt(intervalo.value);
+						if(valor != 0){
+							preencheTabela(valor);
+						}else{
+							alert("Não pode colocar 0!");
+						}
+					}else{
+						alert("Coloque um número!");
+					}
+				
+				});
+				
+				//preenche a tabela com os números estabelecidos no intervalo
+				function preencheTabela(limite){
+					let html = "";
+					let count = 0;
+					let colunas = 1;
+					while(count != limite){
+						
+						if(limite > 0){
+							count++;
+						}else{
+							count--;
+						}
+						
+						if(colunas == 1){
+							html += "<tr>";
+						}
+						
+						html += "<td class='numero'>"+count+"</td>";
+						
+						if(colunas == 10){
+							html += "</tr>";
+							colunas = 1;
+						}else{
+							colunas++;
+						}
+							
+					}
+					
+					tabela.innerHTML = html;
+					quant.innerHTML = "";
+					//colocando os números da tabela no vetor
+					numeros = document.querySelectorAll('.numero');
+					
+				}
+				
+				//verifica quais são os múltiplos de determinado número e muda a cor do seu background
+				function multiplos(m){
+					
+					let count = 0;
+					
+					numeros.forEach(function(numero){
+
+						const valor = parseInt(numero.innerText);
+						
+						if(valor % m == 0){
+							numero.style.backgroundColor = 'green';
+							count++;
+						}else{
+							numero.style.backgroundColor = '';
+						}
+
+					});
+					
+					if(count > 1){
+						quant.innerHTML = "<h4>"+count+" múltiplos encontrados para o número "+m+"</h4>";
+					}else if(count == 1){
+						quant.innerHTML = "<h4>Somente "+count+" múltiplo encontrado para o número "+m+"</h4>";
+					}else{
+						quant.innerHTML = "<h4>Nenhum múltiplo encontrado para o número "+m+"</h4>";
+					}
+				}
+				
+				const i = parseInt(intervalo.value);
+				
+				preencheTabela(i);
+				
+			</script>
+	</body>
+</html>
